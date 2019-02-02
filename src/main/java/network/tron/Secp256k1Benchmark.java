@@ -41,12 +41,6 @@ public class Secp256k1Benchmark {
         return list;
     }
 
-    private void doTest() {
-        testCases.forEach(testCase -> {
-
-        });
-    }
-
     @Benchmark
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     @OperationsPerInvocation(100)
@@ -65,11 +59,14 @@ public class Secp256k1Benchmark {
         }
     }
 
-//    @Benchmark
-//    @OutputTimeUnit(TimeUnit.MILLISECONDS)
-//    @OperationsPerInvocation(100)
-//    public void libsecp256k1KeyRecovery() {
-//
-//    }
+    @Benchmark
+    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    @OperationsPerInvocation(100)
+    public void libsecp256k1KeyRecovery() throws SignatureException {
+        for (TestCase testCase : testCases) {
+            LibSecp256k1Wrapper.signatureToAddress(testCase.hash, testCase.sig);
+        }
+    }
+
 
 }
