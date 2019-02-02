@@ -1,0 +1,21 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - restore_cache:
+          key: secp256k1-benchmark-{{ checksum "pom.xml" }}
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: secp256k1-benchmark-{{ checksum "pom.xml" }}
+
+      - run: mvn package
+      - run: java -jar target/benchmarks.jar
+
+      - store_test_results:
+          path: target/surefire-reports
